@@ -1,9 +1,15 @@
 // ------------------- الوضع المظلم / الفاتح -------------------
 function toggleMode(){
-  document.body.classList.toggle("light");
+  if(document.body.classList.contains("light")){
+    document.body.classList.remove("light");
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+    document.body.classList.add("light");
+  }
 }
 
-// ------------------- عرض اسم المستخدم في الصفحة الرئيسية -------------------
+// ------------------- عرض اسم المستخدم -------------------
 function showUser() {
   const user = JSON.parse(localStorage.getItem('user'));
   if(user){
@@ -98,7 +104,7 @@ function handleCredentialResponse(response){
   window.location="index.html";
 }
 
-// ------------------- تسجيل دخول تقليدي للمالك -------------------
+// ------------------- تسجيل دخول تقليدي -------------------
 function login(){
   let user=document.getElementById("user")?.value;
   let pass=document.getElementById("pass")?.value;
