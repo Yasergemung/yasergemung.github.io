@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>التعليقات</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body onload="showComments()">
+
+<nav>
+<a href="index.html">الرئيسية</a>
+<a href="links.html">الروابط</a>
+<a href="videos.html">فيديوهاتي</a>
+<a href="comments.html">التعليقات</a>
+<button onclick="toggleMode()">🌙</button>
+</nav>
+
+<div class="container">
+
+<h1>التعليقات</h1>
+
+<input id="name" placeholder="اسمك">
+<input id="text" placeholder="تعليقك">
+
+<button onclick="addComment()">إرسال</button>
+
+<div id="commentsBox"></div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
