@@ -1,15 +1,15 @@
-// ------------------- الوضع المظلم / الفاتح -------------------
+// الوضع المظلم / الفاتح
 function toggleMode(){
-  if(document.body.classList.contains("light")){
-    document.body.classList.remove("light");
-    document.body.classList.add("dark");
-  } else {
+  if(document.body.classList.contains("dark")){
     document.body.classList.remove("dark");
     document.body.classList.add("light");
+  } else {
+    document.body.classList.remove("light");
+    document.body.classList.add("dark");
   }
 }
 
-// ------------------- عرض اسم المستخدم -------------------
+// عرض اسم المستخدم بعد تسجيل الدخول
 function showUser() {
   const user = JSON.parse(localStorage.getItem('user'));
   if(user){
@@ -21,7 +21,7 @@ function showUser() {
   }
 }
 
-// ------------------- التعليقات -------------------
+// التعليقات
 let comments = JSON.parse(localStorage.getItem('comments')) || [];
 
 function saveComments(){
@@ -80,7 +80,7 @@ function loadComments(){
   showComments();
 }
 
-// ------------------- تسجيل دخول Google -------------------
+// تسجيل دخول Google
 function googleLogin(){
   google.accounts.id.initialize({
     client_id: "891455424218-lgrnlsb7tivgotdpdas9b5hft9kct3lv.apps.googleusercontent.com",
@@ -104,7 +104,7 @@ function handleCredentialResponse(response){
   window.location="index.html";
 }
 
-// ------------------- تسجيل دخول تقليدي -------------------
+// تسجيل دخول عادي للمالك
 function login(){
   let user=document.getElementById("user")?.value;
   let pass=document.getElementById("pass")?.value;
@@ -122,7 +122,7 @@ function login(){
   }
 }
 
-// ------------------- تأثير الكتابة المتغيرة -------------------
+// نصوص متغيرة typing effect
 const texts = [
   "أنا صانع محتوى ألعاب 🎮",
   "متفوق في ماين كرافت ومصنف عالميًا رقم 338",
@@ -164,7 +164,7 @@ function eraseText() {
   }
 }
 
-// ------------------- بدء كل شيء بعد تحميل الصفحة -------------------
+// بدء كل شيء بعد تحميل الصفحة
 document.addEventListener("DOMContentLoaded", function() {
   showUser();
   loadComments();
