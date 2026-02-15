@@ -50,6 +50,7 @@
       padding: 5px 8px;
       background: #2a2a2a;
       border-radius: 5px;
+      word-wrap: break-word;
     }
   </style>
 </head>
@@ -67,7 +68,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
   import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
-  // هنا تحط بيانات مشروعك من Firebase
+  // 🔥 ضع بيانات مشروعك من Firebase هنا
   const firebaseConfig = {
     apiKey: "AIzaSyCqFKV3EhAGIkSYTuSste28u44gk0fjjRg",
     authDomain: "yasser-gaming-site.firebaseapp.com",
@@ -84,6 +85,7 @@
   const chatBox = document.getElementById("chatbox");
   const msgInput = document.getElementById("msg");
 
+  // وظيفة إرسال الرسالة
   function sendMessage() {
     const msg = msgInput.value.trim();
     if(msg !== "") {
@@ -92,13 +94,14 @@
     }
   }
 
+  // عرض الرسائل الجديدة تلقائيًا
   onChildAdded(ref(db, 'messages'), (snapshot) => {
     const message = snapshot.val().text;
     const div = document.createElement("div");
     div.className = "message";
     div.innerText = message;
     chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight; // يخلي الشات يتحرك تلقائي
+    chatBox.scrollTop = chatBox.scrollHeight;
   });
 </script>
 
