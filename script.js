@@ -1,106 +1,73 @@
-/* الوضع المظلم والفاتح */
-
+// ------------------- الوضع المظلم / الفاتح -------------------
 function toggleMode(){
-
-let body = document.body;
-
-if(body.classList.contains("light")){
-body.classList.remove("light");
-localStorage.setItem("mode","dark");
-}else{
-body.classList.add("light");
-localStorage.setItem("mode","light");
+  document.body.classList.toggle("light");
 }
 
+// ------------------- عرض اسم المستخدم في الصفحة الرئيسية -------------------
+window.onload = function(){
+  const user = JSON.parse(localStorage.getItem('user'));
+  if(user){
+    const welcome = document.getElementById('welcome');
+    if(welcome){
+      welcome.innerHTML = `<h2>أهلاً ${user.name} 👋</h2>
+      ${user.picture ? `<img src="${user.picture}" width="50" style="border-radius:50%;">` : ""}`;
+    }
+  }
+  loadComments();
 }
 
-/* حفظ الوضع */
-if(localStorage.getItem("mode") === "light"){
-document.body.classList.add("light");
-}
+// ------------------- التعليقات -------------------
+let comments = JSON.parse(localStorage.getItem('comments')) || [];
 
-/* تسجيل الدخول */
-
-function login(){
-
-let user = document.getElementById("user").value;
-let pass = document.getElementById("pass").value;
-
-if(user === "yasser" && pass === "1234"){
-localStorage.setItem("role","admin");
-window.location="dashboard.html";
-return;
-}
-
-if(user && pass){
-localStorage.setItem("role","user");
-window.location="index.html";
-}
-
-}
-
-/* التعليقات */
-
-let comments = JSON.parse(localStorage.getItem("comments")) || [];
-
-function save(){
-localStorage.setItem("comments", JSON.stringify(comments));
+function saveComments(){
+  localStorage.setItem('comments', JSON.stringify(comments));
 }
 
 function showComments(){
-
-let box = document.getElementById("commentsBox");
-if(!box) return;
-
-box.innerHTML="";
-
-comments.forEach((c,i)=>{
-
-box.innerHTML += `
-<div class="comment">
-<b>${c.name}</b>
-<p>${c.text}</p>
-
-<button onclick="like(${i})">👍 ${c.likes}</button>
-
-${localStorage.getItem("role")==="admin"
-? `<button onclick="del(${i})">🗑</button>` : ""}
-
-</div>
-`;
-
-});
-
+  const container = document.getElementById('commentsContainer');
+  container.innerHTML = "";
+  comments.forEach((c,index)=>{
+    container.innerHTML += `
+      <div class="comment">
+        <strong>${c.name}</strong>
+        <p>${c.text}</p>
+        <button onclick="likeComment(${index})">👍 ${c.likes}</button>
+        <button onclick="deleteComment(${index})">🗑️</button>
+      </div>
+    `;
+  });
 }
 
 function addComment(){
+  const text = document.getElementById("text").value;
+  if(!text) return;
 
-let name=document.getElementById("name").value;
-let text=document.getElementById("text").value;
+  const user = JSON.parse(localStorage.getItem('user'));
+  let name = user ? user.name : "زائر";
 
-if(!name || !text) return;
-
-comments.push({name,text,likes:0});
-save();
-showComments();
-
+  comments.push({name,text,likes:0});
+  saveComments();
+  showComments();
+  document.getElementById("text").value="";
 }
 
-function like(i){
-comments[i].likes++;
-save();
-showComments();
+function likeComment(index){
+  comments[index].likes++;
+  saveComments();
+  showComments();
 }
 
-function del(i){
-comments.splice(i,1);
-save();
-showComments();
+function deleteComment(index){
+  const role = localStorage.getItem("role");
+  if(role === "admin"){
+    comments.splice(index,1);
+    saveComments();
+    showComments();
+  } else {
+    alert("فقط المالك يمكنه حذف التعليقات!");
+  }
 }
 
-/* لوحة التحكم */
-
-function clearComments(){
-localStorage.removeItem("comments");
-alert("تم حذف كل التعليقات");
+function loadComments(){
+  showComments();
 }
