@@ -14,6 +14,7 @@ window.onload = function(){
     }
   }
   loadComments();
+  typeWriter(); // بدء تأثير الكتابة عند تحميل الصفحة
 }
 
 // ------------------- التعليقات -------------------
@@ -114,5 +115,47 @@ function login(){
     localStorage.setItem("role","user");
     localStorage.setItem("user", JSON.stringify({name:user,picture:""}));
     window.location="index.html";
+  }
+}
+
+// ------------------- تأثير الكتابة المتغيرة -------------------
+const texts = [
+  "أنا صانع محتوى ألعاب 🎮",
+  "متفوق في ماين كرافت ومصنف عالميًا رقم 338",
+  "بدأت صناعة المحتوى منذ 2016",
+  "أقدم فيديوهات وبثوث ممتعة!"
+];
+
+let currentText = 0;
+let charIndex = 0;
+let typingSpeed = 100; 
+let erasingSpeed = 50; 
+let delayBetweenTexts = 1500; 
+
+function typeWriter() {
+  const element = document.getElementById("typed-text");
+  if(!element) return;
+
+  if(charIndex < texts[currentText].length) {
+    element.textContent += texts[currentText].charAt(charIndex);
+    charIndex++;
+    setTimeout(typeWriter, typingSpeed);
+  } else {
+    setTimeout(eraseText, delayBetweenTexts);
+  }
+}
+
+function eraseText() {
+  const element = document.getElementById("typed-text");
+  if(!element) return;
+
+  if(charIndex > 0) {
+    element.textContent = texts[currentText].substring(0, charIndex-1);
+    charIndex--;
+    setTimeout(eraseText, erasingSpeed);
+  } else {
+    currentText++;
+    if(currentText >= texts.length) currentText = 0;
+    setTimeout(typeWriter, typingSpeed);
   }
 }
