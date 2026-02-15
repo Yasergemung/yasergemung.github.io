@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>شات المتابعين</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #121212;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #ff4500;
+    }
+    #chatbox {
+      width: 90%;
+      max-width: 600px;
+      height: 400px;
+      background: #1e1e1e;
+      border: 2px solid #ff4500;
+      overflow-y: auto;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+    }
+    #msg {
+      width: 80%;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      margin-right: 10px;
+    }
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      background: #ff4500;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #e03e00;
+    }
+    .message {
+      margin: 5px 0;
+      padding: 5px 8px;
+      background: #2a2a2a;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>شات المتابعين</h1>
+<div id="chatbox"></div>
+<div>
+  <input type="text" id="msg" placeholder="اكتب رسالتك هنا...">
+  <button onclick="sendMessage()">أرسل</button>
+</div>
+
+<!-- Firebase SDKs -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCqFKV3EhAGIkSYTuSste28u44gk0fjjRg",
+    authDomain: "yasser-gaming-site.firebaseapp.com",
+    databaseURL: "https://yasser-gaming-site-default-rtdb.firebaseio.com",
+    projectId: "yasser-gaming-site",
+    storageBucket: "yasser-gaming-site.firebasestorage.app",
+    messagingSenderId: "887687510528",
+    appId: "1:887687510528:web:b2062b776b1789c04a36e5"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  const chatBox = document.getElementById("chatbox");
+  const msgInput = document.getElementById("msg");
+
+  function sendMessage() {
+    const msg = msgInput.value.trim();
+    if(msg !== "") {
+      push(ref(db, 'messages'), { text: msg });
+      msgInput.value = "";
+    }
+  }
+
+  onChildAdded(ref(db, 'messages'), (snapshot) => {
+    const message = snapshot.val().text;
+    const div = document.createElement("div");
+    div.className = "message";
+    div.innerText = message;
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight; // يخلي الشات يتحرك تلقائي
+  });
+</script>
+
+</body>
+</html>
