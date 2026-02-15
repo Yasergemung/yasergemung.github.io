@@ -1,17 +1,24 @@
 /* ------------------------------ */
-/* الأساسيات                     */
+/* إعدادات عامة للجسم والخطوط     */
 /* ------------------------------ */
 body{
   margin:0;
-  font-family:Arial, sans-serif;
-  background-image:url("bg.jpg");
-  background-size:cover;
-  background-attachment:fixed;
-  color:white;
+  font-family: Arial, sans-serif;
+  background-image: url("bg.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  color: white;
+  transition: background 0.5s, color 0.5s;
+}
+
+/* الوضع الفاتح */
+body.light{
+  background: white !important;
+  color: black;
 }
 
 /* ------------------------------ */
-/* شريط التنقل                    */
+/* شريط التنقل                     */
 /* ------------------------------ */
 nav{
   background:#000000aa;
@@ -26,16 +33,15 @@ nav a{
   font-size:18px;
 }
 
-button{
+nav button{
   padding:8px 15px;
   border:none;
   border-radius:8px;
   cursor:pointer;
-  font-size:16px;
 }
 
 /* ------------------------------ */
-/* الحاوية العامة                  */
+/* الحاوية الرئيسية                 */
 /* ------------------------------ */
 .container{
   text-align:center;
@@ -43,73 +49,138 @@ button{
 }
 
 /* ------------------------------ */
-/* الصورة الشخصية                 */
+/* الصورة الشخصية                  */
 /* ------------------------------ */
 .profile{
   width:150px;
   border-radius:50%;
   border:3px solid cyan;
-
-  /* حركة ناعمة */
   animation: float 3s ease-in-out infinite,
              glow 2s ease-in-out infinite alternate;
 }
 
+/* حركة الطفو */
 @keyframes float {
   0%{ transform: translateY(0px); }
   50%{ transform: translateY(-10px); }
   100%{ transform: translateY(0px); }
 }
 
+/* تأثير الإضاءة */
 @keyframes glow {
   from{ box-shadow: 0 0 10px cyan; }
   to{ box-shadow: 0 0 25px cyan; }
 }
 
 /* ------------------------------ */
-/* البطاقات والتعليقات             */
+/* البطاقات العامة                  */
 /* ------------------------------ */
-.card, .comment{
+.card{
   background:#000000aa;
   margin:15px;
   padding:20px;
   border-radius:12px;
 }
 
+/* ------------------------------ */
+/* التعليقات                        */
+/* ------------------------------ */
+.comment{
+  background:#000000aa;
+  margin:15px;
+  padding:15px;
+  border-radius:12px;
+}
+
 .comment button{
-  margin-right:5px;
   margin-top:5px;
-}
-
-/* ------------------------------ */
-/* الوضع الفاتح                   */
-/* ------------------------------ */
-.light{
-  background:white !important;
+  margin-right:5px;
+  cursor:pointer;
+  border:none;
+  padding:5px 10px;
+  border-radius:5px;
+  background: cyan;
   color:black;
+  transition: transform 0.2s;
+}
+
+.comment button:hover{
+  transform: scale(1.1);
 }
 
 /* ------------------------------ */
-/* تصميم متجاوب لكل الأجهزة      */
+/* قائمة الروابط مع أيقونات        */
+/* ------------------------------ */
+.links-list {
+  list-style: none;
+  padding: 0;
+}
+
+.links-list li {
+  margin: 15px 0;
+  font-size: 20px;
+}
+
+.links-list li a {
+  text-decoration: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s;
+}
+
+.links-list li a i {
+  margin-right: 10px;
+  font-size: 24px;
+  color: cyan;
+  transition: transform 0.3s;
+}
+
+.links-list li a:hover i {
+  transform: scale(1.2);
+}
+
+.links-list li a:hover{
+  color: cyan;
+}
+
+/* ------------------------------ */
+/* النص المتغير (Typing Effect)     */
+/* ------------------------------ */
+#typed-text{
+  font-size: 22px;
+  color: cyan;
+  min-height: 30px;
+  margin: 10px 0 20px 0;
+}
+
+/* ------------------------------ */
+/* متجاوب للهاتف                   */
 /* ------------------------------ */
 @media screen and (max-width: 768px){
-  body { font-size:16px; padding:0 10px; }
-  nav { padding:10px; text-align:center; }
-  nav a { display:block; margin:8px 0; font-size:16px; }
-  .container { padding:20px; }
-  .profile { width:100px; }
-  .card, .comment { padding:15px; margin:10px 0; }
-  textarea { font-size:14px; }
-  button { padding:6px 12px; font-size:14px; }
-}
+  .container{
+    padding:20px;
+  }
 
-@media screen and (min-width: 769px) and (max-width: 1024px){
-  .profile { width:120px; }
-  .container { padding:30px; }
-}
+  nav a{
+    margin:10px 5px;
+    font-size:16px;
+  }
 
-@media screen and (max-width: 480px){
-  .profile { position:relative; top:0; left:0; margin-bottom:10px; }
-  nav button { padding:5px 8px; font-size:14px; }
-  .container { padding:15px; }
+  .profile{
+    width:120px;
+  }
+
+  .links-list li{
+    font-size:18px;
+  }
+
+  .links-list li a i{
+    font-size:20px;
+    margin-right:8px;
+  }
+
+  #typed-text{
+    font-size:18px;
+  }
 }
