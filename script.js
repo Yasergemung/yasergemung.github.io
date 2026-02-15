@@ -1,13 +1,20 @@
-/* الوضع الليلي */
+/* حفظ الوضع */
+if(localStorage.getItem("mode")){
+  document.body.className = localStorage.getItem("mode");
+}
+
+/* تبديل الوضع */
 function toggleMode(){
 
   if(document.body.classList.contains("dark")){
     document.body.classList.remove("dark");
     document.body.classList.add("light");
+    localStorage.setItem("mode","light");
   }
   else{
     document.body.classList.remove("light");
     document.body.classList.add("dark");
+    localStorage.setItem("mode","dark");
   }
 
 }
@@ -97,7 +104,7 @@ function deleteComment(index){
 
 }
 
-/* تسجيل دخول عادي */
+/* تسجيل دخول */
 function login(){
 
   let user=document.getElementById("user").value;
@@ -122,7 +129,7 @@ const texts=[
 "أنا صانع محتوى ألعاب 🎮",
 "متفوق في ماين كرافت ومصنف عالميًا 338",
 "بدأت صناعة المحتوى منذ 2016",
-"أقدم فيديوهات وبثوث ممتعة"
+"أقدم فيديوهات وبثوث ممتعة 🔥"
 ];
 
 let currentText=0;
@@ -138,7 +145,7 @@ function typeWriter(){
     element.textContent += texts[currentText].charAt(charIndex);
     charIndex++;
 
-    setTimeout(typeWriter,100);
+    setTimeout(typeWriter,90);
 
   }
   else{
@@ -158,7 +165,7 @@ function eraseText(){
 
     charIndex--;
 
-    setTimeout(eraseText,50);
+    setTimeout(eraseText,40);
   }
   else{
 
