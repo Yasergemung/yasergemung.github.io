@@ -9,7 +9,6 @@
 <body>
 
 <div class="container">
-
 <h1>تسجيل الدخول</h1>
 
 <input id="user" placeholder="اسم المستخدم">
@@ -17,14 +16,42 @@
 
 <button onclick="login()">دخول</button>
 
+<!-- زر تسجيل الدخول بجوجل -->
+<div style="margin-top:20px">
+<button onclick="googleLogin()" style="padding:10px 20px; border:none; border-radius:8px; background:#4285F4; color:white;">
+تسجيل الدخول باستخدام Google
+</button>
+</div>
+
 </div>
 
 <script src="script.js"></script>
 
+<!-- سكربت جوجل -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<script>
+function googleLogin() {
+
+google.accounts.id.initialize({
+client_id: "891455424218-lgrnlsb7tivgotdpdas9b5hft9kct3lv.apps.googleusercontent.com",
+callback: handleCredentialResponse
+});
+
+google.accounts.id.prompt();
+
+}
+
+function handleCredentialResponse(response) {
+
+alert("تم تسجيل الدخول بجوجل ✅");
+
+localStorage.setItem("role","user");
+
+window.location="index.html";
+
+}
+</script>
+
 </body>
 </html>
-<div style="margin:20px">
-  <button id="googleSignIn" onclick="googleLogin()" style="padding:10px 20px; border:none; border-radius:8px; background:#4285F4; color:white; font-weight:bold;">
-    تسجيل الدخول باستخدام Google
-  </button>
-</div>
