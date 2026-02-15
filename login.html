@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
 <meta charset="UTF-8">
 <title>تسجيل الدخول</title>
@@ -11,10 +11,12 @@
 <div class="container">
 <h1>تسجيل الدخول</h1>
 
+<!-- تسجيل دخول تقليدي -->
 <input id="user" placeholder="اسم المستخدم">
 <input id="pass" type="password" placeholder="كلمة المرور">
-
 <button onclick="login()">دخول</button>
+
+<hr style="margin:20px 0; border-color:cyan;">
 
 <!-- زر تسجيل الدخول بجوجل -->
 <div style="margin-top:20px">
@@ -28,32 +30,55 @@ style="padding:10px 20px; border:none; border-radius:8px; background:#4285F4; co
 
 <script src="script.js"></script>
 
-<!-- سكربت جوجل -->
+<!-- سكربت Google OAuth -->
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-
 <script>
-
+// ------------------- تسجيل دخول Google -------------------
 function googleLogin(){
-
-google.accounts.id.initialize({
-client_id: "891455424218-lgrnlsb7tivgotdpdas9b5hft9kct3lv.apps.googleusercontent.com",
-callback: handleCredentialResponse
-});
-
-google.accounts.id.prompt();
-
+  google.accounts.id.initialize({
+    client_id: "891455424218-lgrnlsb7tivgotdpdas9b5hft9kct3lv.apps.googleusercontent.com",
+    callback: handleCredentialResponse
+  });
+  google.accounts.id.prompt();
 }
 
 function handleCredentialResponse(response){
+  // فك الشفرة للحصول على بيانات المستخدم
+  const base64Url = response.credential.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c){
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
 
-alert("تم تسجيل الدخول بجوجل ✅");
+  const user = JSON.parse(jsonPayload);
 
-localStorage.setItem("role","user");
+  // حفظ معلومات الحساب في LocalStorage
+  localStorage.setItem('user', JSON.stringify(user));
+  localStorage.setItem('role','user');
 
-window.location="index.html";
-
+  alert("تم تسجيل الدخول بجوجل بنجاح ✅");
+  window.location="index.html";
 }
 
+// ------------------- تسجيل دخول تقليدي للمالك -------------------
+function login(){
+  let user=document.getElementById("user").value;
+  let pass=document.getElementById("pass").value;
+
+  // بيانات المالك
+  if(user==="yasser" && pass==="1234"){
+    localStorage.setItem("role","admin");
+    window.location="dashboard.html";
+    return;
+  }
+
+  // تسجيل دخول عادي للمستخدم العادي (بدون Google)
+  if(user && pass){
+    localStorage.setItem("role","user");
+    localStorage.setItem("user", JSON.stringify({name:user,picture:""}));
+    window.location="index.html";
+  }
+}
 </script>
 
 </body>
