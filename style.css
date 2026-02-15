@@ -55,14 +55,12 @@ button{
              glow 2s ease-in-out infinite alternate;
 }
 
-/* حركة الطفو */
 @keyframes float {
   0%{ transform: translateY(0px); }
   50%{ transform: translateY(-10px); }
   100%{ transform: translateY(0px); }
 }
 
-/* تأثير الإضاءة */
 @keyframes glow {
   from{ box-shadow: 0 0 10px cyan; }
   to{ box-shadow: 0 0 25px cyan; }
@@ -78,9 +76,6 @@ button{
   border-radius:12px;
 }
 
-/* ------------------------------ */
-/* التعليقات                     */
-/* ------------------------------ */
 .comment button{
   margin-right:5px;
   margin-top:5px;
@@ -95,71 +90,26 @@ button{
 }
 
 /* ------------------------------ */
-/* تصميم متجاوب للأجهزة الصغيرة  */
+/* تصميم متجاوب لكل الأجهزة      */
 /* ------------------------------ */
 @media screen and (max-width: 768px){
-  
-  body {
-    font-size:16px;
-    padding:0 10px;
-  }
-
-  nav {
-    padding:10px;
-    text-align:center;
-  }
-
-  nav a {
-    display:block;
-    margin:8px 0;
-    font-size:16px;
-  }
-
-  .container {
-    padding:20px;
-  }
-
-  .profile {
-    width:100px; /* تصغير الصورة */
-  }
-
-  .card, .comment {
-    padding:15px;
-    margin:10px 0;
-  }
-
-  textarea {
-    font-size:14px;
-  }
-
-  button {
-    padding:6px 12px;
-    font-size:14px;
-  }
+  body { font-size:16px; padding:0 10px; }
+  nav { padding:10px; text-align:center; }
+  nav a { display:block; margin:8px 0; font-size:16px; }
+  .container { padding:20px; }
+  .profile { width:100px; }
+  .card, .comment { padding:15px; margin:10px 0; }
+  textarea { font-size:14px; }
+  button { padding:6px 12px; font-size:14px; }
 }
 
-/* للأجهزة اللوحية */
 @media screen and (min-width: 769px) and (max-width: 1024px){
-  .profile {
-    width:120px;
-  }
-
-  .container {
-    padding:30px;
-  }
+  .profile { width:120px; }
+  .container { padding:30px; }
 }
 
-/* الهواتف الصغيرة جدًا */
 @media screen and (max-width: 480px){
-  .profile {
-    position:relative; /* بدل absolute */
-    top:0;
-    left:0;
-    margin-bottom:10px;
-  }
-
-  nav button {
-    padding:5px 8px;
-    font-size:14px;
-  }
+  .profile { position:relative; top:0; left:0; margin-bottom:10px; }
+  nav button { padding:5px 8px; font-size:14px; }
+  .container { padding:15px; }
 }
