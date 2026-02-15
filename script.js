@@ -75,7 +75,7 @@ function loadComments(){
   showComments();
 }
 
-// ------------------- تسجيل دخول Google (ممكن لوحده في login.html) -------------------
+// ------------------- تسجيل دخول Google -------------------
 function googleLogin(){
   google.accounts.id.initialize({
     client_id: "891455424218-lgrnlsb7tivgotdpdas9b5hft9kct3lv.apps.googleusercontent.com",
