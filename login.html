@@ -22,13 +22,6 @@
     width: 300px;
   }
   h1 { margin-bottom: 20px; color: #00ffff; }
-  input {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border-radius: 8px;
-    border: none;
-  }
   button {
     width: 100%;
     padding: 10px;
@@ -51,64 +44,44 @@
 
 <div class="container">
   <h1>تسجيل الدخول</h1>
-
-  <!-- تسجيل دخول تقليدي -->
-  <input id="user" placeholder="اسم المستخدم">
-  <input id="pass" type="password" placeholder="كلمة المرور">
-  <button onclick="login()">دخول</button>
-
-  <hr style="margin:20px 0; border-color:cyan;">
-
-  <!-- زر تسجيل الدخول بجوجل -->
   <button id="googleSignIn">تسجيل الدخول باستخدام Google</button>
 </div>
 
-<!-- سكربت Google OAuth -->
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-<script>
-  // ------------------- تهيئة Google OAuth -------------------
-  google.accounts.id.initialize({
-    client_id: "891455424218-lgrnlsb7tivgotdpdas9b5hft9kct3lv.apps.googleusercontent.com",
-    callback: handleCredentialResponse
-  });
+<!-- Firebase SDKs -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+  import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
 
-  document.getElementById("googleSignIn").onclick = () => {
-    google.accounts.id.prompt();
+  // Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyCqFKV3EhAGIkSYTuSste28u44gk0fjjRg",
+    authDomain: "yasser-gaming-site.firebaseapp.com",
+    projectId: "yasser-gaming-site",
   };
 
-  function handleCredentialResponse(response){
-    const base64Url = response.credential.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c){
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
 
-    const user = JSON.parse(jsonPayload);
-
-    localStorage.setItem('user', JSON.stringify(user));
-    localStorage.setItem('role','user');
-
-    alert("تم تسجيل الدخول بجوجل بنجاح ✅");
-    window.location = "./"; // ينقل على الصفحة الرئيسية بشكل صحيح
-  }
-
-  // ------------------- تسجيل دخول تقليدي -------------------
-  function login(){
-    let user = document.getElementById("user").value;
-    let pass = document.getElementById("pass").value;
-
-    if(user==="yasser" && pass==="1234"){
-      localStorage.setItem("role","admin");
-      window.location="./dashboard.html";
-      return;
-    }
-
-    if(user && pass){
-      localStorage.setItem("role","user");
-      localStorage.setItem("user", JSON.stringify({name:user,picture:""}));
-      window.location="./";
-    }
-  }
+  // Google Sign-In
+  document.getElementById("googleSignIn").onclick = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        alert("تم تسجيل الدخول باسم: " + user.displayName);
+        localStorage.setItem("user", JSON.stringify({
+          name: user.displayName,
+          email: user.email,
+          photo: user.photoURL
+        }));
+        window.location = "./"; // يرجع على الصفحة الرئيسية
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("فشل تسجيل الدخول: " + error.message);
+      });
+  };
 </script>
 
 </body>
