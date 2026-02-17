@@ -2,7 +2,6 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>تسجيل الدخول</title>
 <style>
   body {
@@ -55,7 +54,7 @@
   <!-- تسجيل دخول المالك -->
   <input id="adminUser" placeholder="اسم المستخدم">
   <input id="adminPass" type="password" placeholder="كلمة المرور">
-  <button onclick="adminLogin()">دخول المالك</button>
+  <button id="adminLoginBtn">دخول المالك</button>
 
   <hr style="margin:20px 0; border-color:cyan;">
 
@@ -101,11 +100,12 @@
   };
 
   // ------------------- تسجيل دخول المالك -------------------
-  function adminLogin() {
+  const adminBtn = document.getElementById("adminLoginBtn");
+
+  adminBtn.addEventListener("click", () => {
     const user = document.getElementById("adminUser").value.trim();
     const pass = document.getElementById("adminPass").value.trim();
 
-    // تحقق بيانات المالك (يمكنك تعديل الاسم وكلمة المرور هنا)
     if(user === "yasser" && pass === "1234"){
       localStorage.setItem("role","admin");
       localStorage.setItem("user", JSON.stringify({name:"yasser"}));
@@ -115,7 +115,7 @@
     }
 
     alert("بيانات الدخول غير صحيحة");
-  }
+  });
 </script>
 
 </body>
