@@ -1,85 +1,55 @@
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-<meta charset="UTF-8">
-<title>تسجيل الدخول</title>
-<link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-<div class="container">
-<h1>تسجيل الدخول</h1>
-
-<!-- تسجيل دخول تقليدي -->
-<input id="user" placeholder="اسم المستخدم">
-<input id="pass" type="password" placeholder="كلمة المرور">
-<button onclick="login()">دخول</button>
-
-<hr style="margin:20px 0; border-color:cyan;">
-
-<!-- زر تسجيل الدخول بجوجل -->
-<div style="margin-top:20px">
-<button onclick="googleLogin()" 
-style="padding:10px 20px; border:none; border-radius:8px; background:#4285F4; color:white; font-size:16px;">
-تسجيل الدخول باستخدام Google
-</button>
-</div>
-
-</div>
-
-<script src="script.js"></script>
-
-<!-- سكربت Google OAuth -->
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
-// ------------------- تسجيل دخول Google -------------------
-function googleLogin(){
-  google.accounts.id.initialize({
-    client_id: "891455424218-lgrnlsb7tivgotdpdas9b5hft9kct3lv.apps.googleusercontent.com",
-    callback: handleCredentialResponse
-  });
-  google.accounts.id.prompt();
-}
+  // ------------------- تهيئة Google OAuth مرة واحدة -------------------
+  let googleInitialized = false;
+  window.onload = () => {
+    google.accounts.id.initialize({
+      client_id: "891455424218-lgrnlsb7tivgotdpdas9b5hft9kct3lv.apps.googleusercontent.com",
+      callback: handleCredentialResponse
+    });
+    googleInitialized = true;
+  };
 
-function handleCredentialResponse(response){
-  // فك الشفرة للحصول على بيانات المستخدم
-  const base64Url = response.credential.split('.')[1];
-  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c){
-    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-  }).join(''));
-
-  const user = JSON.parse(jsonPayload);
-
-  // حفظ معلومات الحساب في LocalStorage
-  localStorage.setItem('user', JSON.stringify(user));
-  localStorage.setItem('role','user');
-
-  alert("تم تسجيل الدخول بجوجل بنجاح ✅");
-  window.location="index.html";
-}
-
-// ------------------- تسجيل دخول تقليدي للمالك -------------------
-function login(){
-  let user=document.getElementById("user").value;
-  let pass=document.getElementById("pass").value;
-
-  // بيانات المالك
-  if(user==="yasser" && pass==="1234"){
-    localStorage.setItem("role","admin");
-    window.location="dashboard.html";
-    return;
+  // ------------------- تسجيل دخول Google -------------------
+  function googleLogin() {
+    if(!googleInitialized){
+      alert("جاري تهيئة Google، حاول مرة ثانية بعد قليل");
+      return;
+    }
+    google.accounts.id.prompt(); // يظهر نافذة تسجيل الدخول
   }
 
-  // تسجيل دخول عادي للمستخدم العادي (بدون Google)
-  if(user && pass){
-    localStorage.setItem("role","user");
-    localStorage.setItem("user", JSON.stringify({name:user,picture:""}));
-    window.location="index.html";
+  function handleCredentialResponse(response){
+    const base64Url = response.credential.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c){
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    const user = JSON.parse(jsonPayload);
+
+    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('role','user');
+
+    alert("تم تسجيل الدخول بجوجل بنجاح ✅");
+    window.location = "index.html";
   }
-}
+
+  // ------------------- تسجيل دخول تقليدي -------------------
+  function login(){
+    let user = document.getElementById("user").value;
+    let pass = document.getElementById("pass").value;
+
+    if(user==="yasser" && pass==="1234"){
+      localStorage.setItem("role","admin");
+      window.location="dashboard.html";
+      return;
+    }
+
+    if(user && pass){
+      localStorage.setItem("role","user");
+      localStorage.setItem("user", JSON.stringify({name:user,picture:""}));
+      window.location="index.html";
+    }
+  }
 </script>
-
-</body>
-</html>
