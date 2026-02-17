@@ -22,6 +22,13 @@
     width: 300px;
   }
   h1 { margin-bottom: 20px; color: #00ffff; }
+  input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: none;
+  }
   button {
     width: 100%;
     padding: 10px;
@@ -44,6 +51,15 @@
 
 <div class="container">
   <h1>تسجيل الدخول</h1>
+
+  <!-- تسجيل دخول المالك -->
+  <input id="adminUser" placeholder="اسم المستخدم">
+  <input id="adminPass" type="password" placeholder="كلمة المرور">
+  <button onclick="adminLogin()">دخول المالك</button>
+
+  <hr style="margin:20px 0; border-color:cyan;">
+
+  <!-- زر تسجيل الدخول بجوجل -->
   <button id="googleSignIn">تسجيل الدخول باستخدام Google</button>
 </div>
 
@@ -64,7 +80,7 @@
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
 
-  // Google Sign-In
+  // ------------------- تسجيل دخول Google -------------------
   document.getElementById("googleSignIn").onclick = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
@@ -75,13 +91,31 @@
           email: user.email,
           photo: user.photoURL
         }));
-        window.location = "./"; // يرجع على الصفحة الرئيسية
+        localStorage.setItem("role","user"); // دور المستخدم عادي
+        window.location = "./"; // الصفحة الرئيسية
       })
       .catch((error) => {
         console.error(error);
         alert("فشل تسجيل الدخول: " + error.message);
       });
   };
+
+  // ------------------- تسجيل دخول المالك -------------------
+  function adminLogin() {
+    const user = document.getElementById("adminUser").value.trim();
+    const pass = document.getElementById("adminPass").value.trim();
+
+    // تحقق بيانات المالك (يمكنك تعديل الاسم وكلمة المرور هنا)
+    if(user === "yasser" && pass === "1234"){
+      localStorage.setItem("role","admin");
+      localStorage.setItem("user", JSON.stringify({name:"yasser"}));
+      alert("تم تسجيل دخول المالك ✅");
+      window.location = "./dashboard.html"; // صفحة خاصة بالمالك
+      return;
+    }
+
+    alert("بيانات الدخول غير صحيحة");
+  }
 </script>
 
 </body>
