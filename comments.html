@@ -2,35 +2,70 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>التعليقات</title>
-<link rel="stylesheet" href="style.css">
+<style>
+  body { font-family: Arial; padding:20px; background:#111; color:#fff; }
+  #comments { margin-top:20px; }
+  .comment { border:1px solid #00ffff; padding:10px; margin-bottom:10px; border-radius:8px; position:relative; }
+  .delete-btn { position:absolute; top:5px; right:5px; background:red; color:#fff; border:none; border-radius:5px; cursor:pointer; }
+</style>
 </head>
-
 <body>
 
-<nav>
-  <a href="index.html">الرئيسية</a>
-  <a href="links.html">الروابط</a>
-  <a href="videos.html">فيديوهاتي</a>
-  <a href="comments.html">التعليقات</a>
-  <a href="login.html">تسجيل الدخول</a>
-  <button onclick="toggleMode()">🌙</button>
-</nav>
+<h1>التعليقات</h1>
+<input id="commentInput" placeholder="اكتب تعليقك هنا">
+<button onclick="addComment()">إرسال</button>
 
-<div class="container">
-  <h1>التعليقات</h1>
+<div id="comments"></div>
 
-  <!-- إضافة تعليق -->
-  <div class="card">
-    <textarea id="text" placeholder="اكتب تعليقك هنا..." rows="3" style="width:100%; border-radius:8px;"></textarea>
-    <button onclick="addComment()" style="margin-top:10px;">أضف تعليق</button>
-  </div>
+<script>
+  // جلب بيانات المستخدم من LocalStorage
+  const currentUser = JSON.parse(localStorage.getItem("user") || '{}');
+  const role = localStorage.getItem("role") || 'user';
 
-  <!-- عرض التعليقات -->
-  <div id="commentsContainer"></div>
-</div>
+  // تحميل التعليقات من LocalStorage
+  let comments = JSON.parse(localStorage.getItem("comments") || '[]');
+  const commentsDiv = document.getElementById("comments");
 
-<script src="script.js"></script>
+  function renderComments() {
+    commentsDiv.innerHTML = '';
+    comments.forEach((c, index) => {
+      const div = document.createElement("div");
+      div.className = 'comment';
+      div.innerHTML = `<strong>${c.name}:</strong> ${c.text}`;
+      
+      // زر مسح يظهر بس للمالك
+      if(role === 'admin'){
+        const btn = document.createElement("button");
+        btn.className = 'delete-btn';
+        btn.innerText = 'مسح';
+        btn.onclick = () => deleteComment(index);
+        div.appendChild(btn);
+      }
+
+      commentsDiv.appendChild(div);
+    });
+  }
+
+  function addComment() {
+    const input = document.getElementById("commentInput");
+    const text = input.value.trim();
+    if(!text) return alert("اكتب تعليق أولاً");
+
+    comments.push({ name: currentUser.name || 'مستخدم', text });
+    localStorage.setItem("comments", JSON.stringify(comments));
+    input.value = '';
+    renderComments();
+  }
+
+  function deleteComment(index) {
+    comments.splice(index,1);
+    localStorage.setItem("comments", JSON.stringify(comments));
+    renderComments();
+  }
+
+  renderComments();
+</script>
+
 </body>
 </html>
